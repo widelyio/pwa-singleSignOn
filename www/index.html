@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <link rel="manifest" href="./manifest.json" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="theme-color" content="#eeeeee" />
+    <meta name="google-signin-client_id" content="438284717073-3ifb08g0t718jq7n42ti091kmbj27rca.apps.googleusercontent.com">
+    <link href="https://fonts.googleapis.com/css?family=Quicksand">
+    <link href="style.css" rel="stylesheet">
+    <!--Facebook's JavaScript SDK-->
+    <script>
+        window.fbAsyncInit = function () {
+            FB.init({
+                appId: '1654522987992711',
+                cookie: true,
+                xfbml: true,
+                version: 'v3.1'
+            });
+
+            FB.AppEvents.logPageView();
+
+        };
+
+        (function (d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) { return; }
+            js = d.createElement(s); js.id = id;
+            js.src = "https://connect.facebook.net/en_US/sdk.js";
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+    </script>
+    <!--Google's SSO API-->
+    <script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script>
+    <!--Bootstrap-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+        crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <div id="main-wrapper" class="container">
+        <div id="loginButtons" class="row text-center">
+            <!--Google's SSO Code-->
+            <div class="col-lg-4 col-xl-4">
+                <div class="g-signin2" data-onsuccess="onSignIn"></div>
+                <script>
+
+                    function onSignIn(googleUser) {
+                        var profile = googleUser.getBasicProfile();
+                        console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+                        console.log('Name: ' + profile.getName());
+                        console.log('Image URL: ' + profile.getImageUrl());
+                        console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+                    }
+
+                </script>
+            </div>
+            <!--Facebook's SSO Code-->
+            <div class="col-lg-4 col-xl-4">
+                <div>
+                    <fb:login-button scope="public_profile,email" onlogin="checkLoginState();">
+                    </fb:login-button>
+                    <script>
+                        function checkLoginState() {
+                            FB.getLoginStatus(function (response) {
+                                console.log(response);
+                            });
+                        }
+                    </script>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker
+                .register('/sw.js')
+                .then(function () {
+                    console.log("Service Worker Registered");
+                }).catch(function (err) {
+                    console.log('ServiceWorker registration failed: ', err);
+                });
+        };
+    </script>
+</body>
+
+</html>
